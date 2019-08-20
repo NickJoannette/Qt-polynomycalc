@@ -174,10 +174,10 @@ void MainWindow::onAdditionClicked()
 void MainWindow::onSubtractionClicked()
 {
 
-        if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+        if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
         else poly_entry_box_1.setStyleSheet("color: black;");
 
-        if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+        if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
         else poly_entry_box_2.setStyleSheet("color: black;");
 
         if (!(poly_entry_box_1.text() == "" || poly_entry_box_2.text() == ""))
