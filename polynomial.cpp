@@ -181,24 +181,14 @@ std::ostream& operator<< (std::ostream & os, const Polynomial & p)
 
 double& Polynomial::operator[] (int n)
 {
-	// By n'th I assumed the instructions meant n'th power; std::map structure was particularly useful for this purpose
-	try {
-		if (n < 0) throw NegativeCoefficientDegreeException();
-		else return terms.find(n)->second;
-	}
-	catch (NegativeCoefficientDegreeException & ncde) { std::cout << "Error: " << ncde.what() << std::endl; }
+   return terms.find(n)->second;
 }
 
 double Polynomial::operator[] (int n) const
 {
 	// As per instructions, if the requested power is negative throw a corresponding exception
-	try {
-		if (n < 0) throw NegativeCoefficientDegreeException();
-		else return terms.find(n)->second;
-	}
-	catch (NegativeCoefficientDegreeException & ncde) { std::cout << "Error: " << ncde.what() << std::endl; }
+    return terms.find(n)->second;
 }
-
 
 double Polynomial::operator() (double x) const
 {

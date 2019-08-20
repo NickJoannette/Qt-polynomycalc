@@ -2,7 +2,6 @@
 #define POLYNOMIAL_H
 
 #include "malformedpolynomialexception.h"
-#include "negativecoefficientdegreeexception.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -34,8 +33,7 @@ public:
 	double operator[] (int n) const;
 	double operator() (double x) const;
 
-	//~Polynomial(); // Destructor does nothing in this implementation; no dynamic memory needs to be deallocated since the purpose was to create the Polynomial & Rational
-					 // classes and demonstrate their functions. May implement a custom destructor if necessary when making a user-input based calculator application
+    //~Polynomial(); // A custom destructor does nothing in this implementation; no dynamic memory needs to be deallocated
 protected:
 
 	// Terms of the polynomial are sorted by power in the map

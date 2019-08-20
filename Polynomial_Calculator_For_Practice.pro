@@ -30,7 +30,6 @@ HEADERS += \
     divisionbyzeropolynomialexception.h \
     mainwindow.h \
     malformedpolynomialexception.h \
-    negativecoefficientdegreeexception.h \
     parsingutilities.h \
     polynomial.h \
     rational.h

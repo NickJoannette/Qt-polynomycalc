@@ -20,8 +20,7 @@ public:
 	
 	double operator() (double x) const;
 
-	//~Rational();// Destructor does nothing in this implementation; no dynamic memory needs to be deallocated since the purpose was to create the Polynomial & Rational
-				 // classes and demonstrate their functions. May implement a custom destructor if necessary when making a user-input based calculator application
+    //~Rational();// A custom destructor does nothing in this implementation; no dynamic memory needs to be deallocated
 private:
 	Polynomial numerator, denominator;
 

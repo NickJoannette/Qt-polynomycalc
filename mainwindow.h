@@ -17,6 +17,7 @@ private slots:
     void onAdditionClicked();
     void onSubtractionClicked();
     void onMultiplicationClicked();
+    void onEvaluateClicked();
 private:
        QFormLayout * poly_entry_form_layout;
        QBoxLayout * button_box_layout;
@@ -24,7 +25,7 @@ private:
        QTextBrowser result_display_box;
        QLabel poly_entry_label1, poly_entry_label2;
        QLineEdit poly_entry_box_1, poly_entry_box_2;
-       QPushButton subtraction_button, addition_button, scalar_multiplication_button, multiplication_button;
+       QPushButton subtraction_button, addition_button, evaluation_button, multiplication_button;
 
 };
 
