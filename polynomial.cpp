@@ -135,15 +135,18 @@ const Polynomial operator+ (const Polynomial& lhs, const Polynomial& rhs)
 
 const Polynomial operator- (const Polynomial& rhs, const Polynomial& lhs)
 {
-	// Similar approach as the operator + function, only inverted to fit the logic of subtraction
-	Polynomial sum(rhs);
-	std::map<unsigned int, double>::const_iterator end = sum.terms.end();
-	for (auto & i : lhs.terms)
-	{
-		if (sum.terms.find(i.first) == end) sum.terms.insert(std::make_pair(i.first,-i.second));
-		else sum.terms.find(i.first)->second -= i.second;
-	}
-	return sum;
+    // Similar approach as the operator + function, only inverted to fit the logic of subtraction
+    Polynomial sum(rhs);
+    std::map<unsigned int, double>::const_iterator end = sum.terms.end();
+    for (auto & i : lhs.terms)
+    {
+        if (sum.terms.find(i.first) == end) sum.terms.insert(std::make_pair(i.first,-i.second));
+        else {
+            sum.terms.find(i.first)->second -= i.second;
+            if (sum.terms.find(i.first)->second == 0) sum.terms.erase(i.first);
+        }
+    }
+    return sum;
 }
 
 const Polynomial operator* (const Polynomial& P, double z)
