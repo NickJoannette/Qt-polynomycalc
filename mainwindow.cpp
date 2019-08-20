@@ -26,19 +26,19 @@ MainWindow::MainWindow()
     chartView->setStyleSheet("background_color: 2a4d10");
     chartviewsize.setHeight(308);
     chartviewsize.setWidth(700);
-    chartView->setFixedSize(chartviewsize);
+    chartView->setMinimumSize(chartviewsize);
     chartView->chart()->setTheme(QChart::ChartThemeHighContrast);
 
 //    chartView->setMidLineWidth(400);
     // Setting up layouts and main stylesheet
     setStyleSheet("background-color: 	#00000;");//#2a4d69
     poly_entry_form_layout = new QFormLayout;
-    form_and_chart_layout = new QHBoxLayout;
+    //form_and_chart_layout = new QHBoxLayout;
     setLayout(form_and_chart_layout);
     button_box_layout = new QBoxLayout(QBoxLayout::LeftToRight);
     chart_grid_layout = new QGridLayout();
     value_evaluation_layout = new QHBoxLayout();
-    poly_entry_form_layout->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
 
     // Stylesheet, text, and attribute setting for child widgets
     Title.setText("POLYNOMIALS MUST CONTAIN ONLY:\n1 DECIMAL, 1 'x', AND 1 '^' IMMEDIATELY FOLLOWING 'x'\nGOOD FORM IS:  -22.575x^3    +4x^2 - 8x^0");
@@ -64,16 +64,18 @@ MainWindow::MainWindow()
     result_display_box.setStyleSheet("color: #e7eff6; border: 1px outset #4b86b4;");
     evaluation_display_box.setStyleSheet("color: #e7eff6; border: 1px outset #4b86b4;");
     */
-        result_display_box.setStyleSheet("color: black; border: 1px outset black;");
-        evaluation_display_box.setStyleSheet("color: black; border: 1px outset black;");
+    result_display_box.setStyleSheet("color: black; border: 1px outset black;");
+    evaluation_display_box.setStyleSheet("color: black; border: 1px outset black;");
     evaluation_display_box.setMinimumWidth(80);
+
+    result_display_box.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     // Qbutton objects for triggering subtract, addition, and scalar multiplication processes
     addition_button.setText("Add");
     subtraction_button.setText("Subtract");
     evaluation_button.setText("Evaluate");
     multiplication_button.setText("Multiply");
-
+    chartView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     addition_button.setStyleSheet("padding: 5px; background-color: #101e2a; color: #e7eff6; border: 1px ridge ivory;");
     subtraction_button.setStyleSheet("padding: 5px; background-color: #101e2a; color: #e7eff6;border: 1px ridge ivory;");
