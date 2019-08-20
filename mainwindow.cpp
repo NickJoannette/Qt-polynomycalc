@@ -251,6 +251,6 @@ void MainWindow::onEvaluateClicked()
 {
     double value_of_x = xvalue_entry_box.text().toDouble();
     evaluation_display_box.setText(QString::number(current_result(value_of_x)));
-
+    // Handle erroneous input & operations
 
 }
