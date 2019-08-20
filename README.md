@@ -2,7 +2,7 @@
 
 ![ui](https://raw.githubusercontent.com/NickJoannette/qt-poly-calc/master/polycalc.PNG?token=AK7AUQTA66LB4KDEJEOA3H25LQORK)
 
-This is a simple program I worked on to introduce myself to qt, c++ design for desktop applications, and handling user input signals.
+This is a simple program I worked on as an extension of an assignment to introduce myself to qt, c++ design for desktop applications, and handling user input signals.
 
 The legal characters for polynomial entry are, in this order: +/-, digits, decimal point, digits (if necessary), x, ^, digits.
 ### Legal Input
