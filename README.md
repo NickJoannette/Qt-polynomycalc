@@ -22,4 +22,4 @@ negative exponents not currently accepted
 ![error handling](https://raw.githubusercontent.com/NickJoannette/qt-poly-calc/master/mayimp.PNG)
 
 ### Work to do
-Have to add in dynamic axis resizing dependent on user input, and renovate the parsing handler.
+Have to add in dynamic axis resizing dependent on user input and renovate the parsing handler.
