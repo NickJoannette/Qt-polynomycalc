@@ -10,8 +10,8 @@ Spaces anywhere are ignored.
 Examples:
 ```
 0x^0 
-4.x^2
++4.x^2
 -  5.054x^18
-0004x^1
++0004x^1
 ```
 negative exponents not currently accepted
