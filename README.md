@@ -2,7 +2,7 @@
 
 ![ui](https://raw.githubusercontent.com/NickJoannette/qt-poly-calc/master/polycalc.PNG?token=AK7AUQTA66LB4KDEJEOA3H25LQORK)
 
-Just a simple project I am working on to get used to qt slots, signals, and dynamic charting input.
+Still have to add in dynamic axis resizing dependent on user input, this is just a simple program I worked on to introduce myself to qt & general software development
 The legal characters for polynomial entry are, in this order: +/-, digits, decimal point, digits (if necessary), x, ^, digits.
 
 
