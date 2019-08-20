@@ -4,28 +4,68 @@
 
 MainWindow::MainWindow()
 {
+    QWidget *topWidget = new QWidget;
+    form_and_chart_layout = new QHBoxLayout(topWidget);
+    series = new QtCharts::QSplineSeries();
+    evaluation_points = new QtCharts::QAreaSeries;
+       series->append(0, 0);
 
+
+    QtCharts::QChart *chart;
+    chart = new QtCharts::QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->addSeries(evaluation_points);
+    chart->setTitle("Polynomials 1, 2, & result");
+    chart->createDefaultAxes();
+    chart->axes(Qt::Horizontal).first()->setRange(0,100);
+    chart->axes(Qt::Vertical).first()->setRange(-2000, 2000);
+    chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    QSize chartviewsize;
+    chartView->setStyleSheet("background_color: 2a4d10");
+    chartviewsize.setHeight(308);
+    chartviewsize.setWidth(700);
+    chartView->setFixedSize(chartviewsize);
+    chartView->chart()->setTheme(QChart::ChartThemeHighContrast);
+
+//    chartView->setMidLineWidth(400);
     // Setting up layouts and main stylesheet
-    setStyleSheet("background-color: 	#2a4d69;");
+    setStyleSheet("background-color: 	#00000;");//#2a4d69
     poly_entry_form_layout = new QFormLayout;
-    setLayout(poly_entry_form_layout);
+    form_and_chart_layout = new QHBoxLayout;
+    setLayout(form_and_chart_layout);
     button_box_layout = new QBoxLayout(QBoxLayout::LeftToRight);
-    button_grid_layout = new QGridLayout();
+    chart_grid_layout = new QGridLayout();
     value_evaluation_layout = new QHBoxLayout();
-    poly_entry_form_layout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+    poly_entry_form_layout->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
 
     // Stylesheet, text, and attribute setting for child widgets
+    Title.setText("POLYNOMIALS MUST CONTAIN ONLY:\n1 DECIMAL, 1 'x', AND 1 '^' IMMEDIATELY FOLLOWING 'x'\nGOOD FORM IS:  -22.575x^3    +4x^2 - 8x^0");
+
     poly_entry_label1.setText("Polynomial 1");
     poly_entry_label2.setText("Polynomial 2");
     enter_xvalue_label.setText("Value of x:");
-    enter_xvalue_label.setStyleSheet("color: #e7eff6;");
+
+    enter_xvalue_label.setStyleSheet("color: black;");
+        poly_entry_label1.setStyleSheet("color: black;");
+        poly_entry_label2.setStyleSheet("color: black;");
+        poly_entry_box_1.setStyleSheet("color: black;");
+        poly_entry_box_2.setStyleSheet("color: black;");
+        xvalue_entry_box.setStyleSheet("color: black;");
+    /*enter_xvalue_label.setStyleSheet("color: #e7eff6;");
     poly_entry_label1.setStyleSheet("color: #e7eff6;");
     poly_entry_label2.setStyleSheet("color: #e7eff6;");
     poly_entry_box_1.setStyleSheet("color: #e7eff6;");
     poly_entry_box_2.setStyleSheet("color: #e7eff6;");
     xvalue_entry_box.setStyleSheet("color: #e7eff6;");
+
+
     result_display_box.setStyleSheet("color: #e7eff6; border: 1px outset #4b86b4;");
     evaluation_display_box.setStyleSheet("color: #e7eff6; border: 1px outset #4b86b4;");
+    */
+        result_display_box.setStyleSheet("color: black; border: 1px outset black;");
+        evaluation_display_box.setStyleSheet("color: black; border: 1px outset black;");
     evaluation_display_box.setMinimumWidth(80);
 
     // Qbutton objects for triggering subtract, addition, and scalar multiplication processes
@@ -55,7 +95,9 @@ MainWindow::MainWindow()
     poly_entry_form_layout->addRow(&result_display_box);
     poly_entry_form_layout->addRow(value_evaluation_layout);
 
-
+    form_and_chart_layout->addLayout(poly_entry_form_layout,1);
+    form_and_chart_layout->addWidget(chartView);
+    topWidget->setFixedHeight(100);
 
     connect(&addition_button,SIGNAL(clicked()),this,SLOT(onAdditionClicked()));
     connect(&subtraction_button,SIGNAL(clicked()),this,SLOT(onSubtractionClicked()));
@@ -66,11 +108,12 @@ MainWindow::MainWindow()
 void MainWindow::onAdditionClicked()
 {
 
-      if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-      else poly_entry_box_1.setStyleSheet("color: snow;");
+      if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
+      else poly_entry_box_1.setStyleSheet("color: black;");
 
-      if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-      else poly_entry_box_2.setStyleSheet("color: snow;");
+
+      if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
+      else poly_entry_box_2.setStyleSheet("color: black;");
 
       if (!(poly_entry_box_1.text() == "" || poly_entry_box_2.text() == ""))
         try{
@@ -79,17 +122,17 @@ void MainWindow::onAdditionClicked()
             {
                 p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
             }
-            catch (MalformedPolynomialException & mpe)
+            catch (UnparseablePolynomialException & mpe)
             {
                 result_display_box.setText("Error formatting polynomial 1: " + QString::fromUtf8(mpe.what()));
-                poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
 
                     try
                     {
                         p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
-                    } catch (MalformedPolynomialException & mpe)
+                    } catch (UnparseablePolynomialException & mpe)
                     {
-                        poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                        poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                     }
 
                 throw;
@@ -99,26 +142,32 @@ void MainWindow::onAdditionClicked()
             {
                 p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
                 sum = Polynomial(p1 + p2);
-            } catch (MalformedPolynomialException & mpe)
+            } catch (UnparseablePolynomialException & mpe)
             {
                 result_display_box.setText("Error formatting polynomial 1: " + QString::fromUtf8(mpe.what()));
-                poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                     try
                     {
                         p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
                     }
-                    catch (MalformedPolynomialException & mpe)
+                    catch (UnparseablePolynomialException & mpe)
                     {
-                        poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                        poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                     }
 
                 throw;
+            }
+            series->clear();
+            for (int i = 0 ; i < 250 ; i ++)
+            {
+
+                series->append(i,sum(i));
             }
 
             current_result = sum;
             result_display_box.setText("(" + p1.getQStr() + ")" + " + " + "(" + p2.getQStr() + ")\n= " + sum.getQStr());
 
-        }catch (MalformedPolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
+        }catch (UnparseablePolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
 
 }
 
@@ -126,10 +175,10 @@ void MainWindow::onSubtractionClicked()
 {
 
         if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-        else poly_entry_box_1.setStyleSheet("color: snow;");
+        else poly_entry_box_1.setStyleSheet("color: black;");
 
         if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-        else poly_entry_box_2.setStyleSheet("color: snow;");
+        else poly_entry_box_2.setStyleSheet("color: black;");
 
         if (!(poly_entry_box_1.text() == "" || poly_entry_box_2.text() == ""))
         try{
@@ -138,16 +187,16 @@ void MainWindow::onSubtractionClicked()
                 {
                     p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
                 }
-                catch (MalformedPolynomialException & mpe)
+                catch (UnparseablePolynomialException & mpe)
                 {
                     result_display_box.setText("Error formatting polynomial 1: " + QString::fromUtf8(mpe.what()));
-                    poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                    poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                         try
                         {
                             p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
-                        } catch (MalformedPolynomialException & mpe)
+                        } catch (UnparseablePolynomialException & mpe)
                         {
-                            poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                            poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                         }
 
                     throw;
@@ -157,15 +206,15 @@ void MainWindow::onSubtractionClicked()
                 {
                     p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
                     diff = Polynomial(p1 - p2);
-                } catch (MalformedPolynomialException & mpe)
+                } catch (UnparseablePolynomialException & mpe)
                 {
                     result_display_box.setText("Error formatting polynomial 1: " + QString::fromUtf8(mpe.what()));
-                    poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                    poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                         try
                         {
                             p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
                         }
-                        catch (MalformedPolynomialException & mpe)
+                        catch (UnparseablePolynomialException & mpe)
                         {
                             poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
                         }
@@ -173,12 +222,20 @@ void MainWindow::onSubtractionClicked()
                 }
 
                 // Else if things were successful this time, get rid of the warning border
-                poly_entry_box_1.setStyleSheet("color: snow;");
-                poly_entry_box_2.setStyleSheet("color: snow;");
+                poly_entry_box_1.setStyleSheet("color: black;");
+                poly_entry_box_2.setStyleSheet("color: black;");
+
+                series->clear();
+                for (int i = 0 ; i < 250 ; i ++)
+                {
+
+                    series->append(i,diff(i));
+                }
+
                 current_result = diff;
                 result_display_box.setText("(" + p1.getQStr() + ")" + " - " + "(" + p2.getQStr() + ")\n= " + (diff.terms.size() > 0 ? diff.getQStr() : "0"));
 
-           }catch (MalformedPolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
+           }catch (UnparseablePolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
 
 }
 
@@ -186,10 +243,10 @@ void MainWindow::onMultiplicationClicked()
 {
 
         if (poly_entry_box_1.text() == "") poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-        else poly_entry_box_1.setStyleSheet("color: snow;");
+        else poly_entry_box_1.setStyleSheet("color: black;");
 
         if (poly_entry_box_2.text() == "")poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
-        else poly_entry_box_2.setStyleSheet("color: snow;");
+        else poly_entry_box_2.setStyleSheet("color: black;");
         if (!(poly_entry_box_1.text() == "" || poly_entry_box_2.text() == ""))
         try{
                 Polynomial p1,p2,product;
@@ -197,17 +254,17 @@ void MainWindow::onMultiplicationClicked()
                 {
                     p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
                 }
-                catch (MalformedPolynomialException & mpe)
+                catch (UnparseablePolynomialException & mpe)
                 {
                     result_display_box.setText("Error formatting polynomial: " + QString::fromUtf8(mpe.what()));
-                    poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                    poly_entry_box_1.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                             try
                             {
                                 p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
                                 product = Polynomial(p1.dot(p2));
-                            } catch (MalformedPolynomialException & mpe)
+                            } catch (UnparseablePolynomialException & mpe)
                             {
-                                 poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                                 poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
                             }
 
                     throw;
@@ -217,16 +274,16 @@ void MainWindow::onMultiplicationClicked()
                 {
                     p2 = Polynomial(poly_entry_box_2.text().toUtf8().constData());
                     product = Polynomial(p1.dot(p2));
-                } catch (MalformedPolynomialException & mpe)
+                } catch (UnparseablePolynomialException & mpe)
                 {
                     result_display_box.setText("Error formatting polynomial: " + QString::fromUtf8(mpe.what()));
-                    poly_entry_box_2.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
+                    poly_entry_box_2.setStyleSheet("color: black; border: 2px solid #CD3C3C");
 
                             try
                             {
                                 p1 = Polynomial((poly_entry_box_1.text().toUtf8().constData()));
                             }
-                            catch (MalformedPolynomialException & mpe)
+                            catch (UnparseablePolynomialException & mpe)
                             {
                                  poly_entry_box_1.setStyleSheet("color: snow; border: 2px solid #CD3C3C");
 
@@ -236,12 +293,20 @@ void MainWindow::onMultiplicationClicked()
                 }
 
                 // Else if things were successful this time, get rid of the warning border
-                poly_entry_box_1.setStyleSheet("color: snow;");
-                poly_entry_box_2.setStyleSheet("color: snow;");
-                current_result = product;
-                result_display_box.setText("(" + p1.getQStr() + ")" + " * " + "(" + p2.getQStr() + ")\n= " + product.getQStr());
+                poly_entry_box_1.setStyleSheet("color: black;");
+                poly_entry_box_2.setStyleSheet("color: black;");
 
-           }catch (MalformedPolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
+                series->clear();
+                for (int i = 0 ; i < 250 ; i ++)
+                {
+
+                    series->append(i,product(i));
+                }
+
+                current_result = product;
+                result_display_box.setText("(" + p1.getQStr() + ")" + " X " + "(" + p2.getQStr() + ")\n= " + product.getQStr());
+
+           }catch (UnparseablePolynomialException & mpe) {result_display_box.setText("Error formatting polynomials: " + QString::fromUtf8(mpe.what()));}
 
 
 
@@ -251,6 +316,7 @@ void MainWindow::onEvaluateClicked()
 {
     double value_of_x = xvalue_entry_box.text().toDouble();
     evaluation_display_box.setText(QString::number(current_result(value_of_x)));
+
     // Handle erroneous input & operations
 
 }

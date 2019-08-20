@@ -1,7 +1,7 @@
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
-#include "malformedpolynomialexception.h"
+#include "unparseablepolynomialexception.h"
 #include <iostream>
 #include <iomanip>
 #include <string>

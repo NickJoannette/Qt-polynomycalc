@@ -14,14 +14,14 @@ void removeCharFromString(std::string & s, char c)
 
 const formatted_degree validDegree(std::string s)
 {
-	// Remove the caret ('^') symbol from the beginning of the string; if any parts of the string are anything other than a digit after that, throw malformed exception
-	// Throw malformed exception in that case
+    // Remove the caret ('^') symbol from the beginning of the string; if any parts of the string are anything other than a digit after that, throw Unparseable exception
+    // Throw Unparseable exception in that case
 	s = s.substr(1,std::string::npos);
-	for (size_t i = 0; i < s.size(); ++i) if (!isDigit(s[i])) throw MalformedPolynomialException();
+    for (size_t i = 0; i < s.size(); ++i) if (!isDigit(s[i])) throw UnparseablePolynomialException();
 	// Continue, and catch the invalid argument error if the string still cannot convert to int
 	try {
 		return formatted_degree{ true, unsigned(std::stoi(s)) };
-	}catch (std::invalid_argument & ia){throw MalformedPolynomialException(); }
+    }catch (std::invalid_argument & ia){throw UnparseablePolynomialException(); }
 }
 
 const formatted_coefficient validCoefficient(std::string s)
@@ -42,9 +42,9 @@ const formatted_coefficient validCoefficient(std::string s)
 		s = s.substr(1, std::string::npos);
 	}
 
-	// Erase the 'x' at the end of the coefficient. If there isn't one, throw a malformed exception
+    // Erase the 'x' at the end of the coefficient. If there isn't one, throw a Unparseable exception
 	if (s[s.size()-1] == 'x') s.erase(s.size() - 1);
-	else throw MalformedPolynomialException();
+    else throw UnparseablePolynomialException();
 
 	// Remove the decimal point if it exists
 	if (s.find('.') != std::string::npos)
@@ -54,9 +54,9 @@ const formatted_coefficient validCoefficient(std::string s)
 		s.erase(f, l - f);
 	}
 
-	// If any characters except digits exist after this, it was an invalid coefficient - throw a malformed exception
+    // If any characters except digits exist after this, it was an invalid coefficient - throw a Unparseable exception
 	// Including all relevant char types to be safe
-	if (s.find_first_of("+-.^x") != std::string::npos) throw MalformedPolynomialException();
+    if (s.find_first_of("+-.^x") != std::string::npos) throw UnparseablePolynomialException();
 
 	// Else re-insert the decimal point, convert to double, add the sign back, and return the appropriate formatted_coefficient
 	if (decimal_loc != 0) s.insert(decimal_loc, ".");
@@ -75,7 +75,7 @@ const formatted_term validateTermForm(std::string & s)
 
 	// Find the location of the caret ('^') character
 	caret = s.find('^');
-	// If a caret character didn't exist, throw malformed exception
+    // If a caret character didn't exist, throw Unparseable exception
 	if (caret != std::string::npos)
 	{
 		// Split the string intwo two parts: the degree, and the coefficient, using the caret as a delimiter
@@ -84,10 +84,10 @@ const formatted_term validateTermForm(std::string & s)
 		// Use the appropriate functions to validate them
 		formatted_coefficient fc = validCoefficient(coefficient);
 		formatted_degree fd = validDegree(degree);
-		// If they were valid, return them to the callign function where they are added to the terms of the polynomial. Else, throw a malformed exception
+        // If they were valid, return them to the callign function where they are added to the terms of the polynomial. Else, throw a Unparseable exception
 		if (fc.valid && fd.valid) return formatted_term{ fc.value, fd.value };
-		else throw MalformedPolynomialException();
+        else throw UnparseablePolynomialException();
 	}
-	else throw MalformedPolynomialException();
+    else throw UnparseablePolynomialException();
 }
 

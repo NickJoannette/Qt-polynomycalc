@@ -1,5 +1,6 @@
 QT += gui
 QT += widgets
+QT += charts
 # CONFIG += c++11 console
 CONFIG -= app_bundle
 
@@ -29,7 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     divisionbyzeropolynomialexception.h \
     mainwindow.h \
-    malformedpolynomialexception.h \
     parsingutilities.h \
     polynomial.h \
-    rational.h
+    rational.h \
+    unparseablepolynomialexception.h

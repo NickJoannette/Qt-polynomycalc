@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QtGui>
 #include "mainwindow.h"
+
 void handleAddition(){};
 
 int main(int argc, char *argv[])
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
     MainWindow main_window;
     // Declare, size, show, and title your window
 
-    main_window.resize(250,95);
+  //  main_window.resize(250,95);
     main_window.show();
     main_window.setWindowTitle("Polynomial Calculator");
 

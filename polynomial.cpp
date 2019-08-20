@@ -22,9 +22,9 @@ Polynomial::Polynomial(std::string polynomial)
 
 	try
 	{
-		// If the polynomial has illegal characters or no exponent caret '^' (required for all terms) throw malformed exception
-		// We check for other malformed parts of the terms later
-		if (polynomial.find_first_not_of(legal_chars) != std::string::npos ) throw MalformedPolynomialException();
+        // If the polynomial has illegal characters or no exponent caret '^' (required for all terms) throw Unparseable exception
+        // We check for other Unparseable parts of the terms later
+        if (polynomial.find_first_not_of(legal_chars) != std::string::npos ) throw UnparseablePolynomialException();
 		else
 		{
 			// Remove spaces
@@ -73,7 +73,7 @@ Polynomial::Polynomial(std::string polynomial)
 		// Since it is assured by this point that the input polynomial string was well-formed, assign it to terms_string
 		terms_string = polynomial;
 
-	}	catch (MalformedPolynomialException & mpe) { throw; } // Catch any errors from the parsing process & re-throw to calling function
+    }	catch (UnparseablePolynomialException & mpe) { throw; } // Catch any errors from the parsing process & re-throw to calling function
 }
 
 const std::string & Polynomial::getStr() const
@@ -162,7 +162,7 @@ const Polynomial operator* (const Polynomial& P, double z)
 std::istream& operator>> (std::istream & is, Polynomial & p)
 {
 	// Was not sure if this was the intended functionality in the instructions
-	// Reads in a string and then assigns the reference polynomial p to it; if necessary, throws malformed exception through the Polynomial constructor call
+    // Reads in a string and then assigns the reference polynomial p to it; if necessary, throws Unparseable exception through the Polynomial constructor call
 	std::string s;
 	std::getline(is, s);
 	p = Polynomial(s);

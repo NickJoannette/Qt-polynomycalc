@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "malformedpolynomialexception.h"
+#include "unparseablepolynomialexception.h"
 
 // These structs are used for returning two pieces of information simultaneously from the validDegree, validCoefficient, and validateTermForm functions during parsing
 // They are intended to act as an extra fail-safe during parsing
