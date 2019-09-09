@@ -54,6 +54,4 @@ void removeCharFromString(std::string & s, char c);
 const formatted_term validateTermForm(std::string & s);
 const formatted_degree validDegree(std::string s);
 const formatted_coefficient validCoefficient(std::string s);
-
-
 #endif
